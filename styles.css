@@ -1,0 +1,101 @@
+@font-face {
+    font-family: 'Liberation Serif';
+    src: url('fonts/LiberationSerif-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Liberation Serif';
+    src: url('fonts/LiberationSerif-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Liberation Serif', serif;
+    font-size: 18px; /* Increased base font size */
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-weight: normal;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+header, footer {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px; /* Increased base font size */
+    padding: 20px;
+    background-color: #1c1c1c;
+    box-sizing: border-box;
+}
+
+.header-buttons {
+    margin-top: 10px;
+}
+
+.header-buttons button {
+    font-family: 'Liberation Serif', serif;
+    background-color: #6200ea;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 24px;
+    margin: 5px;
+}
+
+.header-buttons button:hover {
+    background-color: #3700b3;
+}
+
+main {
+    width: 80%;
+    max-width: 1600px;
+    flex: 1;
+    margin: 40px auto;
+    box-sizing: border-box;
+}
+
+section {
+    margin: 20px 0;
+}
+
+/* Specific styles for the Projects section to not center */
+section:nth-of-type(2) {
+    display: block;
+    text-align: left;
+}
+
+button {
+    background-color: #333399;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #262673;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
