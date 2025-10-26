@@ -1,30 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JMABT</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joseph Abt – CE Engineer</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Fira+Code&display=swap');
+
+    :root {
+      --black: #010101;
+      --purple: #7D15ED;
+      --hot: #FF00FF;
+      --glow: 0 0 5px var(--purple),
+              0 0 10px var(--purple),
+              0 0 20px var(--purple),
+              0 0 40px var(--purple),
+              0 0 80px var(--hot);
+    }
+
+    ::selection {
+      background: var(--purple);
+      color: var(--black);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+
+    html, body {
+      height: 100%;
+      background: var(--black);
+      font-family: 'Fira Code', monospace;
+      color: #eee;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(0,0,0,.15),
+          rgba(0,0,0,.15) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      pointer-events: none;
+      z-index: 9999;
+      animation: flicker .15s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { opacity: .8 }
+      100% { opacity: 1 }
+    }
+
+    /* fake loading bar */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10000;
+      pointer-events: none;
+      transition: opacity 1s;
+    }
+
+    .loader.hide { opacity: 0 }
+
+    .bar {
+      width: 50vw;
+      max-width: 350px;
+      height: 4px;
+      background: #222;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--purple);
+      box-shadow: var(--glow);
+      animation: load 1.2s cubic-bezier(0, .8, .2, 1) forwards;
+    }
+
+    @keyframes load {
+      to { transform: translateX(0) }
+      from { transform: translateX(-100%) }
+    }
+
+    /* centered hypercard */
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      perspective: 1000px;
+    }
+
+    .card {
+      width: 90vw;
+      max-width: 700px;
+      background: radial-gradient(circle at 50% 0, rgba(125,21,237,.15), transparent 60%),
+                  linear-gradient(145deg, #111 0%, #000 100%);
+      border: 1px solid var(--purple);
+      padding: 3rem 2rem;
+      text-align: center;
+      box-shadow: var(--glow), inset 0 0 4px var(--purple);
+      transform: rotateX(10deg) rotateY(-10deg);
+      transition: transform .6s cubic-bezier(.23,1,.32,1), box-shadow .4s;
+      animation: glitch-in 1s forwards;
+    }
+
+    @keyframes glitch-in {
+      0% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        transform: rotateX(10deg) rotateY(-10deg) scale(.8);
+        opacity: 0;
+      }
+      40% {
+        clip-path: polygon(0 20%, 100% 0, 80% 100%, 0 80%);
+      }
+      60% {
+        clip-path: polygon(20% 0, 100% 20%, 80% 100%, 0 80%);
+      }
+    }
+
+    .card:hover {
+      transform: rotateX(0) rotateY(0) scale(1.02);
+      box-shadow: 0 0 10px var(--purple),
+                  0 0 25px var(--purple),
+                  0 0 50px var(--hot);
+    }
+
+    /* glitchy headers  (pure css) */
+    h1, h2 {
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 8vw, 4rem);
+      color: var(--purple);
+      animation: glitch 2.2s infinite steps(1);
+    }
+
+    @keyframes glitch {
+      0%,100% { opacity: 1 }
+      50% { opacity: .3 }
+      52% { opacity: 1 }
+      54% { opacity: .2 }
+      56% { opacity: 1 }
+    }
+
+    h2 {
+      font-size: clamp(1rem, 4vw, 1.3rem);
+      color: var(--hot);
+      margin: .3em 0 1.5em;
+      letter-spacing: 6px;
+      animation: flicker-title 3s infinite steps(1);
+    }
+
+    @keyframes flicker-title {
+      0%,100% { opacity: 1 }
+      50% { opacity: .3 }
+      52% { opacity: 1 }
+      54% { opacity: .2 }
+      56% { opacity: 1 }
+    }
+
+    /* links */
+    .contact-info { margin: 2rem 0 }
+
+    .contact-info a {
+      display: inline-block;
+      color: var(--purple);
+      text-decoration: none;
+      margin: 0 1rem;
+      padding: .3rem .6rem;
+      position: relative;
+      transition: .3s;
+      overflow: hidden;
+    }
+
+    .contact-info a::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--purple);
+      z-index: -1;
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform .3s cubic-bezier(.23,1,.32,1);
+    }
+
+    .contact-info a:hover {
+      color: var(--black);
+      text-shadow: none;
+    }
+
+    .contact-info a:hover::before {
+      transform: scaleY(1);
+    }
+
+    p {
+      line-height: 1.7;
+      margin: 1.2em auto;
+      max-width: 55ch;
+    }
+
+    /* copyright */
+    .no-tracking {
+      margin-top: 2rem;
+      font-size: .7rem;
+      color: #666;
+      letter-spacing: 2px;
+    }
+
+    /* exit */
+    .fade-out {
+      animation: vanish .6s forwards;
+    }
+
+    @keyframes vanish {
+      to {
+        transform: translateY(20px) scale(.95);
+        opacity: 0;
+        filter: blur(10px);
+      }
+    }
+
+    /*make stack responsive-r */
+    @media (max-width: 600px) {
+      .card {
+        padding: 2rem 1.2rem;
+        transform: none !important
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <h1>Joseph Abt's personal website - welcome!</h1>
-        <div class="header-buttons">
-            <button onclick="location.href='index.html'">Home</button>
-            <button onclick="location.href='projects.html'">Projects</button>
-            <button onclick="location.href='about.html'">About</button>
-            <button onclick="location.href='contact.html'">Contact</button>
-            <button onclick="location.href='Resume.html'">Resume</button>
-        </div>
-    </header>
-    <main>
-        <section>
-            <h2>Welcome to my personal website.</h2>
-            <p>This is where I collect a portfolio of my work, and other various information. </p>
-        </section>
-    </main>
+
+  <div class="loader">
+    <h2>LOADING...</h2>
+    <div class="bar"></div>
+  </div>
+
+  <main>
+    <section class="card">
+      <h1 contenteditable="true" spellcheck="false">Joseph Abt</h1>
+      <h2>Computer Engineer</h2>
+
+      <p>Looking for non-linear solutions to classical problems? You'll find them here. That's one of my calling cards.</p>
+
+      <div class="contact-info">
+        <a href="mailto:joe@jmabt.com">Email</a>
+        <a href="https://github.com/jmabt" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/jmabt" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+
+      <p>Specialties: bare-metal C, PCB design, 3D printing, robotics, Meshtastic network shenanigans, occasional live sound stuff, and sometimes firmware necromancy. Currently working as a Computer and Electrical Engineering intern at Woodruff Engineering, Inc.</p>
+
+      <p class="no-tracking">© 2024-25 Joseph Abt // no cookies, no trackers, just pure bloat</p>
+    </section>
+  </main>
+
+  <script>
+    /* load finish */
+    window.addEventListener('load', () =>
+      setTimeout(() =>
+        document.querySelector('.loader').classList.add('hide')
+      , 1200)
+    );
+
+    /* flash on click, for extra seizre magic */
+    addEventListener('click', e => {
+      const flash = document.createElement('div');
+      flash.style.cssText = `
+        position:fixed; inset:0;
+        background: var(--purple); opacity:.08;
+        pointer-events:none; z-index:9999;
+        animation:flash .15s forwards;
+      `;
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 150);
+    });
+
+    /* append css animation once */
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes flash{ to{opacity:0} }
+    `;
+    document.head.appendChild(style);
+  </script>
+<script>
+    /* cool mouse tracking*/
+    const card = document.querySelector('.card');
+    let moved = false;
+    document.addEventListener('mousemove', e => {
+      if(!moved){          // snap to neutral first
+        card.style.transition = 'transform .1s ease-out';
+        card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+        moved = true;
+      }
+      const { innerWidth: w, innerHeight: h } = window;
+      const { clientX: x, clientY: y } = e;
+
+      const rotateY = ((x / w) * 2 - 1) * 15;
+      const rotateX = ((y / h) * -2 + 1) * 15;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+</script>[
 </body>
-<footer>
-          <p> &copy; 2024 Joseph Abt. This website, and all its content, is licensed under CC BY-NC 4.0, unless otherwise stated. </p>
-</footer>
+
 </html>
+```
